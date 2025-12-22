@@ -14,6 +14,7 @@ steps:
   env: [ 'GRADLE_USER_HOME=/workspace/cloudbuild-caches' ]
   args: ['./gradlew',
          'test',
+         '--max-workers=8', # Limits parallel tasks to keep total RAM usage under 32GB
          '-PskipDockerIncompatibleTests=true',
          '-PmavenUrl=gcs://domain-registry-maven-repository/maven',
          '-PpluginsUrl=gcs://domain-registry-maven-repository/plugins'
@@ -211,4 +212,4 @@ images:
   - 'gcr.io/${PROJECT_ID}/proxy:${TAG_NAME}'
 timeout: 7200s
 options:
-  machineType: 'E2_STANDARD_32'
+  machineType: 'E2_HIGHCPU_32'
