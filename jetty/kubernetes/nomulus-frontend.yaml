@@ -41,6 +41,11 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        env:
+        - name: JAVA_OPTS
+          # Set Heap to 75% of the container limit.
+          # Adjust the percentage based on your non-heap usage.
+          value: "-XX:InitialRAMPercentage=75.0 -XX:MaxRAMPercentage=75.0"
         - name: JETTY_WORKER_INSTANCE
           valueFrom:
             fieldRef:
