@@ -171,6 +171,17 @@ steps:
     cp db/build/libs/schema.jar output/
     cp core/build/libs/nomulus-public.jar output/
     cp core/build/libs/nomulus-tests-alldeps.jar output/
+# Create a release in Cloud Deploy
+- name: 'gcr.io/${PROJECT_ID}/builder:latest'
+  env: [ 'GRADLE_USER_HOME=/workspace/cloudbuild-caches' ]
+  entrypoint: /bin/bash
+  args:
+  - -c
+  - |
+    gcloud deploy releases create release-demo \
+    --delivery-pipeline=deploy-nomulus \
+    --project=domain-registry-crash \
+
 # The tarballs and jars to upload to GCS.
 artifacts:
   objects:
