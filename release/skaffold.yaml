@@ -1,0 +1,13 @@
+# skaffold.yaml
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: nomulus-crash
+profiles:
+- name: nomulus-crash-cluster # Your target profile
+  manifests:
+    rawYaml:
+    # Point to the file that currently contains your Deployment and Service
+    - jetty/kubernetes/nomulus-frontend.yaml
+  deploy:
+    kubectl: { }
