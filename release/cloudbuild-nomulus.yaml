@@ -183,7 +183,7 @@ steps:
     gcloud deploy releases create release-demo \
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
-    --region=us-east5
+    --region=us-east5 \
     --source=release/skaffold.yaml
 
 # The tarballs and jars to upload to GCS.
