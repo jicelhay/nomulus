@@ -184,6 +184,7 @@ steps:
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
     --region=us-east5
+    --source=release/skaffold.yaml
 
 # The tarballs and jars to upload to GCS.
 artifacts:
