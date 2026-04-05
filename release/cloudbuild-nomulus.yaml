@@ -180,7 +180,8 @@ steps:
   - |
     gcloud deploy releases create release-demo \
     --delivery-pipeline=deploy-nomulus \
-    --project=domain-registry-crash \
+    --project=domain-registry-alpha \
+    --region=us-east5
 
 # The tarballs and jars to upload to GCS.
 artifacts:
