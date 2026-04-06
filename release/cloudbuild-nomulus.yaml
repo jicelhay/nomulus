@@ -127,9 +127,9 @@ steps:
     cp ../../output/nomulus.jar .
     docker build -t gcr.io/${PROJECT_ID}/db_object_updater:${TAG_NAME} \
       --build-arg TAG_NAME=${TAG_NAME} --build-arg PROJECT_ID=${PROJECT_ID} .
-    docker tag gcr.io/${PROJECT_ID}/db_object_updater:${TAG_NAME} \
+    docker tag gcr.io/${PROJECT_ID}/db_object_updater:c \
       gcr.io/${PROJECT_ID}/db_object_updater:latest
-    docker push gcr.io/${PROJECT_ID}/db_object_updater:${TAG_NAME}
+    docker push gcr.io/${PROJECT_ID}/db_object_updaterc
     docker push gcr.io/${PROJECT_ID}/db_object_updater:latest
   dir: 'release/db-object-updater/'
 # Build and stage Dataflow Flex templates.
@@ -178,7 +178,7 @@ steps:
   args:
   - -c
   - |
-    gcloud deploy releases create ${TAG_NAME} \
+    gcloud deploy releases create nomulus-alpha-1 \
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
     --region=us-east5 \
