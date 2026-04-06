@@ -180,7 +180,7 @@ steps:
   args:
   - -c
   - |
-    c release-demo \
+    gcloud deploy releases create release-demo \
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
     --region=us-east5 \
