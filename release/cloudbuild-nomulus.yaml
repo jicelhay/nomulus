@@ -182,7 +182,7 @@ steps:
   - |
     echo "The raw tag is: ${TAG_NAME}"
     echo "The attempted lowercase tag is: ${TAG_NAME,,}"
-    gcloud deploy releases create testing-nomulus-version \
+    gcloud deploy releases create testing-nomulus-version-2 \
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
     --region=us-east5 \
