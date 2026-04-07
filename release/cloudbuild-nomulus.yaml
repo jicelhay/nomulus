@@ -178,7 +178,9 @@ steps:
   args:
   - -c
   - |
-    gcloud deploy releases create "${TAG_NAME,,}" \
+    echo "The raw tag is: ${TAG_NAME}"
+    echo "The attempted lowercase tag is: ${TAG_NAME,,}"
+    gcloud deploy releases create testing-nomulus-version \
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
     --region=us-east5 \
@@ -214,4 +216,3 @@ images:
 timeout: 7200s
 options:
   machineType: 'E2_HIGHCPU_32'
-  dynamicSubstitutions: true  # Add this line to enable bash-style manipulations
