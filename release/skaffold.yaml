@@ -8,6 +8,6 @@ profiles:
   manifests:
     rawYaml:
     # Point to the file that currently contains your Deployment and Service
-    - jetty/kubernetes/nomulus-frontend.yaml
+    - ../jetty/kubernetes/nomulus-frontend.yaml
   deploy:
     kubectl: { }
