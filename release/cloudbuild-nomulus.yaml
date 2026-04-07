@@ -180,7 +180,7 @@ steps:
   args:
   - -c
   - |
-    gcloud deploy releases create nomulus-alpha-1 \
+    gcloud deploy releases create "${TAG_NAME,,}" \
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
     --region=us-east5 \
