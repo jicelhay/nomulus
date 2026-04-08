@@ -178,14 +178,18 @@ steps:
   args:
   - -c
   - |
-    echo "The raw tag is: ${TAG_NAME}"
-    echo "The attempted lowercase tag is: ${TAG_NAME,,}"
-    gcloud deploy releases create testing-nomulus-version-2 \
+    # Assign the substitution to a shell variable
+    RAW_TAG="${TAG_NAME}"
+    # Use $$ to escape the dollar sign for Cloud Build
+    LOWER_TAG="$${RAW_TAG,,}"
+    echo "The raw tag is: $${RAW_TAG}"
+    echo "The attempted lowercase tag is: $${LOWER_TAG}"
+    gcloud deploy releases create "$${LOWER_TAG}" \
     --delivery-pipeline=deploy-nomulus-alpha \
     --project=domain-registry-alpha \
     --region=us-east5 \
     --source=. \
-    --skaffold-config=release/skaffold.yaml
+    --skaffold-file=release/skaffold.yaml
 
 # The tarballs and jars to upload to GCS.
 artifacts:
