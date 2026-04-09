@@ -198,7 +198,7 @@ steps:
     --project=domain-registry-alpha \
     --region=us-east5 \
     --source=. \
-    --skaffold-file=release/skaffold.yaml
+    --skaffold-file=release/skaffold.yaml \
     --images=gcr.io/${PROJECT_ID}/nomulus=gcr.io/${PROJECT_ID}/nomulus@$${nomulus_digest},gcr.io/${PROJECT_ID}/proxy=gcr.io/${PROJECT_ID}/proxy@$${proxy_digest}
 
 
