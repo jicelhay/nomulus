@@ -180,9 +180,7 @@ steps:
   args:
   - -c
   - |
-    # Assign the substitution to a shell variable
     RAW_TAG="${TAG_NAME}"
-    # Use $$ to escape the dollar sign for Cloud Build
     LOWER_TAG="$${RAW_TAG,,}"
     echo "The raw tag is: $${RAW_TAG}"
     echo "The attempted lowercase tag is: $${LOWER_TAG}"
