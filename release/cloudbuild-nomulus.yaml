@@ -188,19 +188,13 @@ steps:
     proxy_digest=$(gcloud container images list-tags gcr.io/${PROJECT_ID}/proxy \
     --format="get(digest)" --filter="tags = ${TAG_NAME}")
 
-    echo "The raw tag is: $${RAW_TAG}"
-    echo "The attempted lowercase tag is: $${LOWER_TAG}"
-    echo "Nomulus digest: $${nomulus_digest}"
-    echo "Proxy digest: $${proxy_digest}"
-
     gcloud deploy releases create "$${LOWER_TAG}" \
-    --delivery-pipeline=deploy-nomulus-alpha \
+    --delivery-pipeline=nomulus-alpha  \
     --project=domain-registry-alpha \
     --region=us-east5 \
     --source=. \
     --skaffold-file=release/skaffold.yaml \
     --images=gcr.io/${PROJECT_ID}/nomulus=gcr.io/${PROJECT_ID}/nomulus@$${nomulus_digest},gcr.io/${PROJECT_ID}/proxy=gcr.io/${PROJECT_ID}/proxy@$${proxy_digest}
-
 
 # The tarballs and jars to upload to GCS.
 artifacts:
