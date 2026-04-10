@@ -4,10 +4,13 @@ kind: Config
 metadata:
   name: nomulus-crash
 profiles:
-- name: nomulus-crash-cluster # Your target profile
+- name: canary
   manifests:
     rawYaml:
-    # Point to the file that currently contains your Deployment and Service
-    - ../jetty/kubernetes/nomulus-alpha-frontend.yaml
+    - ../jetty/kubernetes/nomulus-alpha-pubapi-canary.yaml
+- name: stable
+  manifests:
+    rawYaml:
+    - ../jetty/kubernetes/nomulus-alpha-pubapi.yaml
   deploy:
     kubectl: { }
