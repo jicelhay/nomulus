@@ -180,21 +180,25 @@ steps:
   args:
   - -c
   - |
-    RAW_TAG="${TAG_NAME}"
-    LOWER_TAG="$${RAW_TAG,,}"
-    # Retrieve the digests for the built images
-    nomulus_digest=$(gcloud container images list-tags gcr.io/${PROJECT_ID}/nomulus \
-    --format="get(digest)" --filter="tags = ${TAG_NAME}")
-    proxy_digest=$(gcloud container images list-tags gcr.io/${PROJECT_ID}/proxy \
-    --format="get(digest)" --filter="tags = ${TAG_NAME}")
+    if [ "${PROJECT_ID}" = "domain-registry-alpha" ]; then
+      RAW_TAG="${TAG_NAME}"
+      LOWER_TAG="$${RAW_TAG,,}"
+      # Retrieve the digests for the built images
+      nomulus_digest=$(gcloud container images list-tags gcr.io/${PROJECT_ID}/nomulus \
+      --format="get(digest)" --filter="tags = ${TAG_NAME}")
+      proxy_digest=$(gcloud container images list-tags gcr.io/${PROJECT_ID}/proxy \
+      --format="get(digest)" --filter="tags = ${TAG_NAME}")
 
-    gcloud deploy releases create "$${LOWER_TAG}" \
-    --delivery-pipeline=nomulus-alpha  \
-    --project=domain-registry-alpha \
-    --region=us-east5 \
-    --source=. \
-    --skaffold-file=release/skaffold.yaml \
-    --images=gcr.io/${PROJECT_ID}/nomulus=gcr.io/${PROJECT_ID}/nomulus@$${nomulus_digest},gcr.io/${PROJECT_ID}/proxy=gcr.io/${PROJECT_ID}/proxy@$${proxy_digest}
+      gcloud deploy releases create "$${LOWER_TAG}" \
+      --delivery-pipeline=nomulus-alpha  \
+      --project=${PROJECT_ID} \
+      --region=us-east5 \
+      --source=. \
+      --skaffold-file=release/skaffold.yaml \
+      --images=gcr.io/${PROJECT_ID}/nomulus=gcr.io/${PROJECT_ID}/nomulus@$${nomulus_digest},gcr.io/${PROJECT_ID}/proxy=gcr.io/${PROJECT_ID}/proxy@$${proxy_digest}
+    else
+      echo "Skipping Cloud Deploy release creation because PROJECT_ID is ${PROJECT_ID}"
+    fi
 
 # The tarballs and jars to upload to GCS.
 artifacts:
