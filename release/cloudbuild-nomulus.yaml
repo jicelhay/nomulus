@@ -195,7 +195,8 @@ steps:
       --region=us-east5 \
       --source=. \
       --skaffold-file=release/skaffold.yaml \
-      --images=gcr.io/${PROJECT_ID}/nomulus=gcr.io/${PROJECT_ID}/nomulus@$${nomulus_digest},gcr.io/${PROJECT_ID}/proxy=gcr.io/${PROJECT_ID}/proxy@$${proxy_digest}
+      --images=gcr.io/${PROJECT_ID}/nomulus=gcr.io/${PROJECT_ID}/nomulus@$${nomulus_digest},gcr.io/${PROJECT_ID}/proxy=gcr.io/${PROJECT_ID}/proxy@$${proxy_digest} \
+      --deploy-parameters="deployed_image=gcr.io/${PROJECT_ID}/nomulus=gcr.io/${PROJECT_ID}/nomulus@$${nomulus_digest}"
     else
       echo "Skipping Cloud Deploy release creation because PROJECT_ID is ${PROJECT_ID}"
     fi
