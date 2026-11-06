@@ -7,6 +7,30 @@
 # To trigger a build automatically, follow the instructions below and add a trigger:
 # https://cloud.google.com/cloud-build/docs/running-builds/automate-builds
 steps:
+# Recreate the merged, digest-pinned tree when Build 2 starts from the repo.
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: /bin/bash
+  env:
+    - '_INTERNAL_REPO_URL=${_INTERNAL_REPO_URL}'
+    - 'TAG_NAME=${TAG_NAME}'
+  args:
+  - -c
+  - |
+    set -e
+    if [[ "${_TREE_PREPARED}" == "true" ]]; then echo "Tree prepared by the caller."; exit 0; fi
+    git clone https://gerrit.googlesource.com/gcompute-tools
+    sed -i s@/usr/bin/python@/usr/bin/python3@g ./gcompute-tools/git-cookie-authdaemon
+    ./gcompute-tools/git-cookie-authdaemon
+    git clone --depth 1 --branch "$TAG_NAME" "$_INTERNAL_REPO_URL" nomulus-internal
+    bash ./release/prepare_merged_tree.sh merge
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: /bin/bash
+  args:
+  - -c
+  - |
+    set -e
+    if [[ "${_TREE_PREPARED}" == "true" ]]; then exit 0; fi
+    bash ./release/prepare_merged_tree.sh pin "${PROJECT_ID}" "${TAG_NAME}"
 # Download saved Gradle distribution from GCS and install it.
 - name: 'gcr.io/${PROJECT_ID}/builder:latest'
   entrypoint: ./release/install_gradle.sh
@@ -39,6 +63,12 @@ artifacts:
     # This cannot be regexs because of how Spinnaker constructs artifact paths.
     paths:
     - 'proxy/kubernetes/proxy-*.yaml'
+# _TREE_PREPARED is 'true' when the caller has already merged the internal repo into the submitted
+# tree and pinned the image digests. Otherwise, the first steps above do it, cloning the internal
+# repo from _INTERNAL_REPO_URL at TAG_NAME.
+substitutions:
+  _INTERNAL_REPO_URL: ''
+  _TREE_PREPARED: 'false'
 timeout: 3600s
 options:
   machineType: 'E2_HIGHCPU_32'
